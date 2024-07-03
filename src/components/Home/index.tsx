@@ -23,6 +23,13 @@ import {
   lightThemeFailureImgUrl,
 } from "../../Constants/failureImageUrl";
 
+
+import { getCookie } from "../../Constants/storageUtilities";
+
+import fetchApi from "../../Constants/fetchUtilities";
+
+import getAuthHeaders from "../../Constants/getAuthHeaders";
+
 import {
   HomeMainContainer,
   HomeContainer,
@@ -127,7 +134,7 @@ const Home: React.FC = () => {
       case "loading":
         return loader();
       default:
-        return null;
+        return <></>;
     }
   };
 
