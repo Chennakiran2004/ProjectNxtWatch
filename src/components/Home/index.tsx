@@ -25,8 +25,6 @@ import fetchApi from "../../Constants/fetchUtilities";
 
 import getAuthHeaders from "../../Constants/getAuthHeaders";
 
-// import {VIDEO_SEARCH_API} from '../../Constants/videoSearchAPI'
-
 import {
   HomeMainContainer,
   HomeContainer,
@@ -199,7 +197,7 @@ class Home extends Component<{}, HomeState> {
       case apiStatusConstants.inProgress:
         return this.loader();
       default:
-        return null;
+        return <></>;
     }
   };
 
