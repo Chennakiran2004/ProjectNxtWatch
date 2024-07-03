@@ -20,7 +20,7 @@ import {
   VideosList,
 } from "./styledComponents";
 
-// import Layout from "../Layout";
+import Layout from "../Layout";
 
 type ThemeValue = {
   isDarkTheme: boolean;
@@ -42,12 +42,6 @@ class SavedVideos extends Component {
                   src="https://assets.ccbp.in/frontend/react-js/nxt-watch-no-saved-videos-img.png"
                   alt="no saved videos"
                 />
-                {/* <FailureText theme={theme} as="h1">
-                  No saved videos found
-                </FailureText>
-                <FailureText theme={theme} as="p">
-                  You can save your videos while watching them
-                </FailureText> */}
               </NoVideosContainer>
             );
           }
@@ -72,19 +66,19 @@ class SavedVideos extends Component {
 
           return (
             <>
-              {/* <Layout> */}
-              <SavedVideosMainContainer theme={theme}>
-                <SavedVideosContainer>
-                  <SavedMenuContainer theme={theme}>
-                    <IconContainer theme={theme}>
-                      <RiMenuAddLine size={40} color="#ff0b37" />
+              <Layout>
+                <SavedVideosMainContainer>
+                  <SavedMenuContainer>
+                    <IconContainer>
+                      <RiMenuAddLine size={20} style={{ paddingTop: "6px" }} />
                     </IconContainer>
                     <MenuHeading theme={theme}>Saved Videos</MenuHeading>
                   </SavedMenuContainer>
-                  {this.savedList(value)}
-                </SavedVideosContainer>
-              </SavedVideosMainContainer>
-              {/* </Layout> */}
+                  <SavedVideosContainer>
+                    {this.savedList(value)}
+                  </SavedVideosContainer>
+                </SavedVideosMainContainer>
+              </Layout>
             </>
           );
         }}

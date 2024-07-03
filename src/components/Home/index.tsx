@@ -1,4 +1,10 @@
-import React, { Component } from "react";
+import React, { useEffect } from "react";
+
+import { useDispatch, useSelector } from "react-redux";
+
+import { AppDispatch, RootState } from "../../storeFolder/store";
+
+import { getHomeVideos } from "../../ReduxFolder/HomeSlice";
 
 import { ThreeDots } from "react-loader-spinner";
 
@@ -10,22 +16,12 @@ import ThemeContext from "../../Context/ThemeContext";
 
 import HomeBody from "../HomeBody";
 
-import apiStatusConstants from "../../Constants/apiStatusConstants";
-
 import Layout from "../Layout";
 
 import {
   darkThemeFailureImgUrl,
   lightThemeFailureImgUrl,
 } from "../../Constants/failureImageUrl";
-
-import { getCookie } from "../../Constants/storageUtilities";
-
-import fetchApi from "../../Constants/fetchUtilities";
-
-import getAuthHeaders from "../../Constants/getAuthHeaders";
-
-// import {VIDEO_SEARCH_API} from '../../Constants/videoSearchAPI'
 
 import {
   HomeMainContainer,
@@ -48,230 +44,169 @@ import {
   FailureImg,
 } from "./styledComponents";
 
-interface HomeState {
-  isPopup: boolean;
-  searchInput: string;
-  apiStatus: string;
-  videosList: any[];
-}
-
-class Home extends Component<{}, HomeState> {
-  state: HomeState = {
-    isPopup: true,
-    searchInput: "",
-    apiStatus: apiStatusConstants.initial,
-    videosList: [],
-  };
-
-  componentDidMount = () => {
-    this.getVideos();
-  };
-
-  onClickCloseBanner = () => {
-    this.setState({ isPopup: false });
-  };
-
-  renderAddPopup = () => (
-    <GetPremium data-testid="banner">
-      <CloseButton
-        type="button"
-        data-testid="close"
-        onClick={this.onClickCloseBanner}
-      >
-        <IoMdClose size={16} />
-      </CloseButton>
-      <BannerLogo
-        src="https://assets.ccbp.in/frontend/react-js/nxt-watch-logo-light-theme-img.png"
-        alt="nxt watch logo"
-      />
-      <BannerText>Buy Nxt Watch Premium prepaid plans with UPI</BannerText>
-      <GetItButton>GET IT NOW</GetItButton>
-    </GetPremium>
+const Home: React.FC = () => {
+  const dispatch = useDispatch<AppDispatch>();
+  const { status, error, videosList } = useSelector(
+    (state: RootState) => state.home
   );
 
-  updateSearchInput = (event: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({ searchInput: event.target.value });
+  const [isPopup, setIsPopup] = React.useState(true);
+  const [searchInput, setSearchInput] = React.useState("");
+
+  useEffect(() => {
+    dispatch(getHomeVideos(searchInput));
+  }, [dispatch, searchInput]);
+
+  const onClickCloseBanner = () => {
+    setIsPopup(false);
   };
 
-  loader = () => (
+  const updateSearchInput = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchInput(event.target.value);
+  };
+
+  const loader = () => (
     <ThemeContext.Consumer>
-      {(value) => {
-        const { isDarkTheme } = value;
-        return (
-          <LoaderContainer className="loader-container" data-testid="loader">
-            <ThreeDots
-              color={isDarkTheme ? "#ffffff" : "#000000"}
-              height="50"
-              width="50"
-            />
-          </LoaderContainer>
-        );
-      }}
+      {({ isDarkTheme }) => (
+        <LoaderContainer className="loader-container" data-testid="loader">
+          <ThreeDots
+            color={isDarkTheme ? "#ffffff" : "#000000"}
+            height="50"
+            width="50"
+          />
+        </LoaderContainer>
+      )}
     </ThemeContext.Consumer>
   );
 
-  getVideos = async () => {
-    this.setState({ apiStatus: apiStatusConstants.inProgress });
-    const { searchInput } = this.state;
-
-    const jwtToken = getCookie() || "";
-
-    const url = `https://apis.ccbp.in/videos/all?search=${searchInput}`;
-
-    const options = {
-      headers: getAuthHeaders(jwtToken),
-      method: "GET",
-    };
-
-    const response = await fetchApi(url, options);
-
-    if (response.success) {
-      const updatedData = response.data.videos.map((eachItem: any) => ({
-        id: eachItem.id,
-        channel: {
-          name: eachItem.channel.name,
-          profileImageUrl: eachItem.channel.profile_image_url,
-        },
-        publishedAt: eachItem.published_at,
-        viewCount: eachItem.view_count,
-        title: eachItem.title,
-        thumbnailUrl: eachItem.thumbnail_url,
-      }));
-      this.setState({
-        videosList: updatedData,
-        apiStatus: apiStatusConstants.success,
-      });
-    } else {
-      this.setState({ apiStatus: apiStatusConstants.failure });
-    }
-  };
-
-  noVideosView = () => (
+  const noVideosView = () => (
     <ThemeContext.Consumer>
-      {(value) => {
-        const { isDarkTheme } = value;
-        const theme = isDarkTheme ? "dark" : "light";
-
-        return (
-          <NoVideosContainer>
-            <NoVideosImg
-              src="https://assets.ccbp.in/frontend/react-js/nxt-watch-no-search-results-img.png"
-              alt="no videos"
-            />
-            <FailureText theme={theme}>No search results found</FailureText>
-            <FailureText theme={theme}>
-              Try different key words or remove search filter
-            </FailureText>
-            <RetryButton type="button" onClick={this.getVideos}>
-              Retry
-            </RetryButton>
-          </NoVideosContainer>
-        );
-      }}
+      {({ isDarkTheme }) => (
+        <NoVideosContainer>
+          <NoVideosImg
+            src="https://assets.ccbp.in/frontend/react-js/nxt-watch-no-search-results-img.png"
+            alt="no videos"
+          />
+          <FailureText theme={isDarkTheme ? "dark" : "light"}>
+            No search results found
+          </FailureText>
+          <FailureText theme={isDarkTheme ? "dark" : "light"}>
+            Try different key words or remove search filter
+          </FailureText>
+          <RetryButton
+            type="button"
+            onClick={() => dispatch(getHomeVideos(searchInput))}
+          >
+            Retry
+          </RetryButton>
+        </NoVideosContainer>
+      )}
     </ThemeContext.Consumer>
   );
 
-  getSuccessView = () => {
-    const { videosList } = this.state;
-    console.log(videosList);
-
+  const getSuccessView = () => {
     if (videosList.length === 0) {
-      return this.noVideosView();
+      return noVideosView();
     }
 
     return (
       <VideosList>
-        {videosList.map((each) => (
+        {videosList.map((each: any) => (
           <HomeBody key={each.id} videoDetails={each} />
         ))}
       </VideosList>
     );
   };
 
-  renderUIBasedOnAPIStatus = () => {
-    const { apiStatus } = this.state;
-
-    switch (apiStatus) {
-      case apiStatusConstants.success:
-        return this.getSuccessView();
-      case apiStatusConstants.failure:
-        return this.noVideosView();
-      case apiStatusConstants.inProgress:
-        return this.loader();
+  const renderUIBasedOnAPIStatus = () => {
+    switch (status) {
+      case "succeeded":
+        return getSuccessView();
+      case "failed":
+        return noVideosView();
+      case "loading":
+        return loader();
       default:
         return null;
     }
   };
 
-  failureView = () => (
+  const failureView = () => (
     <ThemeContext.Consumer>
-      {(value) => {
-        const { isDarkTheme } = value;
+      {({ isDarkTheme }) => (
+        <FailureContainer>
+          <FailureImg
+            src={isDarkTheme ? darkThemeFailureImgUrl : lightThemeFailureImgUrl}
+            alt="failure view"
+          />
+          <FailureText theme={isDarkTheme ? "dark" : "light"}>
+            Oops! Something Went Wrong
+          </FailureText>
+          <RetryButton
+            type="button"
+            onClick={() => dispatch(getHomeVideos(searchInput))}
+          >
+            Retry
+          </RetryButton>
+        </FailureContainer>
+      )}
+    </ThemeContext.Consumer>
+  );
+
+  return (
+    <ThemeContext.Consumer>
+      {({ isDarkTheme }) => {
         const theme = isDarkTheme ? "dark" : "light";
-        const imgUrl = isDarkTheme
-          ? darkThemeFailureImgUrl
-          : lightThemeFailureImgUrl;
+        const color = isDarkTheme ? "#f9f9f9" : "#181818";
 
         return (
-          <FailureContainer>
-            <FailureImg src={imgUrl} alt="failure view" />
-
-            <FailureText theme={theme}>Oops! Something Went Wrong</FailureText>
-            {/* <FailureText theme={theme} as="p">
-              We are having some trouble to complete your request. Please try
-              again
-            </FailureText> */}
-            <RetryButton type="button" onClick={this.getVideos}>
-              Retry
-            </RetryButton>
-          </FailureContainer>
+          <Layout>
+            <HomeMainContainer theme={theme}>
+              <HomeContainer theme={theme}>
+                {isPopup && (
+                  <GetPremium data-testid="banner">
+                    <CloseButton
+                      type="button"
+                      data-testid="close"
+                      onClick={onClickCloseBanner}
+                    >
+                      <IoMdClose size={16} />
+                    </CloseButton>
+                    <BannerLogo
+                      src="https://assets.ccbp.in/frontend/react-js/nxt-watch-logo-light-theme-img.png"
+                      alt="nxt watch logo"
+                    />
+                    <BannerText>
+                      Buy Nxt Watch Premium prepaid plans with UPI
+                    </BannerText>
+                    <GetItButton>GET IT NOW</GetItButton>
+                  </GetPremium>
+                )}
+                <SearchContainer>
+                  <SearchInput
+                    theme={theme}
+                    type="search"
+                    placeholder="Search"
+                    onChange={updateSearchInput}
+                    value={searchInput}
+                  />
+                  <SearchButton
+                    theme={theme}
+                    type="button"
+                    data-testid="searchButton"
+                    onClick={() => dispatch(getHomeVideos(searchInput))}
+                  >
+                    <BsSearch color={color} />
+                  </SearchButton>
+                </SearchContainer>
+                {renderUIBasedOnAPIStatus()}
+              </HomeContainer>
+            </HomeMainContainer>
+          </Layout>
         );
       }}
     </ThemeContext.Consumer>
   );
-
-  render() {
-    const { isPopup, searchInput } = this.state;
-    return (
-      <ThemeContext.Consumer>
-        {(value) => {
-          const { isDarkTheme } = value;
-          const theme = isDarkTheme ? "dark" : "light";
-          const color = isDarkTheme ? "#f9f9f9" : "#181818";
-          console.log(theme);
-          return (
-            <>
-              <Layout>
-                <HomeMainContainer theme={theme}>
-                  <HomeContainer theme={theme}>
-                    {isPopup && this.renderAddPopup()}
-                    <SearchContainer>
-                      <SearchInput
-                        theme={theme}
-                        type="search"
-                        placeholder="Search"
-                        onChange={this.updateSearchInput}
-                        value={searchInput}
-                      />
-                      <SearchButton
-                        theme={theme}
-                        type="button"
-                        data-testid="searchButton"
-                        onClick={this.getVideos}
-                      >
-                        <BsSearch color={color} />
-                      </SearchButton>
-                    </SearchContainer>
-                    {this.renderUIBasedOnAPIStatus()}
-                  </HomeContainer>
-                </HomeMainContainer>
-              </Layout>
-            </>
-          );
-        }}
-      </ThemeContext.Consumer>
-    );
-  }
-}
+};
 
 export default Home;

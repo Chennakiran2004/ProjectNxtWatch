@@ -1,4 +1,8 @@
-import { Component } from "react";
+import React, { useEffect } from "react";
+
+import { useSelector, useDispatch } from "react-redux";
+
+import { useParams } from "react-router-dom";
 
 import { formatDistanceToNow } from "date-fns";
 
@@ -10,19 +14,21 @@ import ReactPlayer from "react-player";
 
 import { ThreeDots } from "react-loader-spinner";
 
-import { getCookie } from "../../Constants/storageUtilities";
-
 import ThemeContext from "../../Context/ThemeContext";
-
-// import Header from "../Header";
 
 import Sidebar from "../Sidebar";
 
 import SavedVideosContext from "../../Context/SavedVideosContext";
 
-import apiStatusConstants from "../../Constants/apiStatusConstants";
+import Header from "../Header";
 
-import getAuthHeaders from "../../Constants/getAuthHeaders";
+import { AppDispatch, RootState } from "../../storeFolder/store";
+
+import {
+  fetchVideoDetails,
+  toggleLike,
+  toggleDislike,
+} from "../../ReduxFolder/VideoDetailsSlice";
 
 import {
   MainBody,
@@ -47,124 +53,29 @@ import {
   ChannelDetailsText2,
   VideoDescriptionText,
 } from "./styledComponents";
-import { useParams } from "react-router-dom";
 
-export type VideoDetails = {
-  id: string;
-  description: string;
-  publishedAt: string;
-  thumbnailUrl: string;
-  title: string;
-  videoUrl: string;
-  viewCount: number;
-  channel: {
-    name: string;
-    profileImageUrl: string;
-    subscriberCount: number;
-  };
-};
+const VideoItemDetails: React.FC = () => {
+  const { id = "" } = useParams<{ id: string }>();
+  const dispatch = useDispatch<AppDispatch>();
+  const { apiStatus, videoDetails, like, dislike } = useSelector(
+    (state: RootState) => state.videoDetails
+  );
 
-type VideoItemDetailsState = {
-  apiStatus: string;
-  videoDetails: VideoDetails;
-  like: boolean;
-  dislike: boolean;
-};
+  useEffect(() => {
+    dispatch(fetchVideoDetails(id));
+  }, [dispatch, id]);
 
-class VideoItemDetails extends Component<{}, VideoItemDetailsState> {
-  state = {
-    apiStatus: apiStatusConstants.initial,
-    videoDetails: {
-      id: "",
-      description: "",
-      publishedAt: "",
-      thumbnailUrl: "",
-      title: "",
-      videoUrl: "",
-      viewCount: 0,
-      channel: {
-        name: "",
-        profileImageUrl: "",
-        subscriberCount: 0,
-      },
-    },
-    like: false,
-    dislike: false,
+  const updateLikeState = () => {
+    dispatch(toggleLike());
   };
 
-  componentDidMount() {
-    this.getVideoDetails();
-  }
-
-  updateLikeState = () => {
-    this.setState((previousState: { like: boolean; dislike: boolean }) => ({
-      like: !previousState.like,
-      dislike: false,
-    }));
+  const updateDislikeState = () => {
+    dispatch(toggleDislike());
   };
 
-  updateDislikeState = () => {
-    this.setState((previousState: { like: boolean; dislike: boolean }) => ({
-      dislike: !previousState.dislike,
-      like: false,
-    }));
-  };
-
-  getVideoDetails = async () => {
-    this.setState({ apiStatus: apiStatusConstants.inProgress });
-
-    const { id } = useParams<{ id: string }>();
-
-    const url = `https://apis.ccbp.in/videos/${id}`;
-    const jwtToken = getCookie() || "";
-
-    const options = {
-      headers: getAuthHeaders(jwtToken),
-      method: "GET",
-    };
-
-    const response = await fetch(url, options);
-    const data = await response.json();
-
-    if (response.ok) {
-      const updatedData = {
-        videoDetails: data.video_details,
-      };
-      const { videoDetails } = updatedData;
-      const updated: VideoDetails = {
-        id: videoDetails.id,
-        description: videoDetails.description,
-        publishedAt: videoDetails.published_at,
-        thumbnailUrl: videoDetails.thumbnail_url,
-        title: videoDetails.title,
-        videoUrl: videoDetails.video_url,
-        viewCount: videoDetails.view_count,
-        channel: {
-          name: videoDetails.channel.name,
-          profileImageUrl: videoDetails.channel.profile_image_url,
-          subscriberCount: videoDetails.channel.subscriber_count,
-        },
-      };
-      this.setState({
-        videoDetails: updated,
-        apiStatus: apiStatusConstants.success,
-      });
-    } else {
-      this.setState({ apiStatus: apiStatusConstants.failure });
-    }
-  };
-
-  successView = () => {
-    const { videoDetails, like, dislike } = this.state;
-    const {
-      publishedAt,
-      title,
-      videoUrl,
-      viewCount,
-      channel,
-      description,
-      id,
-    } = videoDetails;
+  const successView = () => {
+    const { publishedAt, title, videoUrl, viewCount, channel, description } =
+      videoDetails;
 
     const { name, profileImageUrl, subscriberCount } = channel;
     let postedAt = formatDistanceToNow(new Date(publishedAt));
@@ -204,7 +115,7 @@ class VideoItemDetails extends Component<{}, VideoItemDetailsState> {
                     <Button
                       type="button"
                       theme={likeIsActive}
-                      onClick={this.updateLikeState}
+                      onClick={updateLikeState}
                     >
                       <BiLike size={20} style={{ paddingTop: "6px" }} />
                       Like
@@ -212,7 +123,7 @@ class VideoItemDetails extends Component<{}, VideoItemDetailsState> {
                     <Button
                       type="button"
                       theme={dislikeIsActive}
-                      onClick={this.updateDislikeState}
+                      onClick={updateDislikeState}
                     >
                       <BiDislike size={20} style={{ paddingTop: "6px" }} />
                       Dislike
@@ -263,7 +174,7 @@ class VideoItemDetails extends Component<{}, VideoItemDetailsState> {
     );
   };
 
-  getFailureView = () => (
+  const getFailureView = () => (
     <ThemeContext.Consumer>
       {(value) => {
         const { isDarkTheme } = value;
@@ -276,11 +187,10 @@ class VideoItemDetails extends Component<{}, VideoItemDetailsState> {
           <FailureContainer>
             <FailureImg src={imgUrl} alt="failure view" />
             <FailureText theme={theme}>Oops! Something Went Wrong</FailureText>
-            {/* <FailureText as="p" theme={theme}>
-              We are having some trouble to complete your request. Please try
-              again.
-            </FailureText> */}
-            <RetryButton type="button" onClick={this.getVideoDetails}>
+            <RetryButton
+              type="button"
+              onClick={() => dispatch(fetchVideoDetails(id))}
+            >
               Retry
             </RetryButton>
           </FailureContainer>
@@ -289,7 +199,7 @@ class VideoItemDetails extends Component<{}, VideoItemDetailsState> {
     </ThemeContext.Consumer>
   );
 
-  loader = () => (
+  const loader = () => (
     <ThemeContext.Consumer>
       {(value) => {
         const { isDarkTheme } = value;
@@ -306,48 +216,44 @@ class VideoItemDetails extends Component<{}, VideoItemDetailsState> {
     </ThemeContext.Consumer>
   );
 
-  renderUIBasedOnAPIStatus = () => {
-    const { apiStatus } = this.state;
-
+  const renderUIBasedOnAPIStatus = () => {
     switch (apiStatus) {
-      case apiStatusConstants.success:
-        return this.successView();
-      case apiStatusConstants.failure:
-        return this.getFailureView();
-      case apiStatusConstants.inProgress:
-        return this.loader();
+      case "success":
+        return successView();
+      case "failure":
+        return getFailureView();
+      case "inProgress":
+        return loader();
       default:
         return <></>;
     }
   };
 
-  render() {
-    return (
-      <ThemeContext.Consumer>
-        {(value) => {
-          const { isDarkTheme } = value;
-          const theme = isDarkTheme ? "dark" : "light";
+  return (
+    <ThemeContext.Consumer>
+      {(value) => {
+        const { isDarkTheme } = value;
+        const theme = isDarkTheme ? "dark" : "light";
 
-          return (
-            <>
-              {/* <Header /> */}
-              <MainBody>
-                <SidebarContainer>
-                  <Sidebar />
-                </SidebarContainer>
-                <VideoItemDetailsContainer
-                  data-testid="videoItemDetails"
-                  theme={theme}
-                >
-                  {this.renderUIBasedOnAPIStatus()}
-                </VideoItemDetailsContainer>
-              </MainBody>
-            </>
-          );
-        }}
-      </ThemeContext.Consumer>
-    );
-  }
-}
+        return (
+          <>
+            <Header />
+            <MainBody>
+              <SidebarContainer>
+                <Sidebar />
+              </SidebarContainer>
+              <VideoItemDetailsContainer
+                data-testid="videoItemDetails"
+                theme={theme}
+              >
+                {renderUIBasedOnAPIStatus()}
+              </VideoItemDetailsContainer>
+            </MainBody>
+          </>
+        );
+      }}
+    </ThemeContext.Consumer>
+  );
+};
 
 export default VideoItemDetails;

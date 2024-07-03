@@ -1,6 +1,6 @@
 import React from "react";
 
-import { VideoDetails } from "../../src/components/VideoItemDetails";
+import { VideoDetails } from "../ReduxFolder/VideoDetailsSlice";
 
 const SavedVideosContext = React.createContext({
   save: false,
