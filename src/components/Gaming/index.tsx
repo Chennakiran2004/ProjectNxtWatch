@@ -1,4 +1,4 @@
-import React, { Component, ReactElement } from "react";
+import React, { Component, ReactElement, useEffect } from "react";
 
 import { ThreeDots } from "react-loader-spinner";
 
@@ -8,8 +8,6 @@ import ThemeContext from "../../Context/ThemeContext";
 
 import GamingBody from "../GamingBody";
 
-import apiStatusConstants from "../../Constants/apiStatusConstants";
-
 import Layout from "../Layout";
 
 import {
@@ -17,11 +15,8 @@ import {
   lightThemeFailureImgUrl,
 } from "../../Constants/failureImageUrl";
 
-import getAuthHeaders from "../../Constants/getAuthHeaders";
-
-import { getCookie } from "../../Constants/storageUtilities";
-
-import fetchApi from "../../Constants/fetchUtilities";
+import { useDispatch, useSelector } from "react-redux";
+import { getGamingVideos } from "../../ReduxFolder/GamingSlice";
 
 import {
   GamingMainContainer,
@@ -37,33 +32,21 @@ import {
   FailureImg,
   RetryButton,
 } from "./styledComponents";
+import { AppDispatch, RootState } from "../../storeFolder/store";
 
-interface VideoDetails {
-  id: string;
-  thumbnailUrl: string;
-  title: string;
-  viewCount: number;
-}
+const Gaming: React.FC = () => {
+  const dispatch = useDispatch<AppDispatch>();
 
-type GamingState = {
-  apiStatus: string;
-  videosList: VideoDetails[];
-};
+  const { status, error } = useSelector((state: RootState) => state.gaming);
+  const videosList = useSelector((state: RootState) => state.gaming.videosList);
 
-class Gaming extends Component<{}, GamingState> {
-  state: GamingState = {
-    apiStatus: apiStatusConstants.initial,
-    videosList: [],
-  };
+  useEffect(() => {
+    dispatch(getGamingVideos());
+  }, [dispatch]);
 
-  componentDidMount(): void {
-    this.getVideos();
-  }
-
-  loader = (): ReactElement => (
+  const loader = (): React.ReactElement => (
     <ThemeContext.Consumer>
-      {(value): ReactElement => {
-        const { isDarkTheme } = value;
+      {({ isDarkTheme }): React.ReactElement => {
         const theme = isDarkTheme ? "dark" : "light";
         return (
           <LoaderContainer theme={theme}>
@@ -78,51 +61,17 @@ class Gaming extends Component<{}, GamingState> {
     </ThemeContext.Consumer>
   );
 
-  getVideos = async (): Promise<void> => {
-    this.setState({ apiStatus: apiStatusConstants.inProgress });
+  const getSuccessView = (): React.ReactElement => (
+    <VideosList>
+      {videosList.map((eachVideo: any) => (
+        <GamingBody key={eachVideo.id} gameDetails={eachVideo} />
+      ))}
+    </VideosList>
+  );
 
-    const jwtToken = getCookie() || "";
-
-    const url = "https://apis.ccbp.in/videos/gaming";
-    const options = {
-      headers: getAuthHeaders(jwtToken),
-      method: "GET",
-    };
-
-    const response = await fetchApi(url, options);
-
-    if (response.success) {
-      const updatedData = response.data.videos.map((eachItem: any) => ({
-        id: eachItem.id,
-        thumbnailUrl: eachItem.thumbnail_url,
-        title: eachItem.title,
-        viewCount: eachItem.view_count,
-      }));
-      this.setState({
-        videosList: updatedData,
-        apiStatus: apiStatusConstants.success,
-      });
-    } else {
-      this.setState({ apiStatus: apiStatusConstants.failure });
-    }
-  };
-
-  getSuccessView = (): ReactElement => {
-    const { videosList } = this.state;
-
-    return (
-      <VideosList>
-        {videosList.map((eachVideo: any) => (
-          <GamingBody key={eachVideo.id} gameDetails={eachVideo} />
-        ))}
-      </VideosList>
-    );
-  };
-
-  getFailureView = (): ReactElement => (
+  const getFailureView = (): React.ReactElement => (
     <ThemeContext.Consumer>
-      {(value): ReactElement => {
-        const { isDarkTheme } = value;
+      {({ isDarkTheme }): React.ReactElement => {
         const theme = isDarkTheme ? "dark" : "light";
         const imgUrl = isDarkTheme
           ? darkThemeFailureImgUrl
@@ -131,13 +80,15 @@ class Gaming extends Component<{}, GamingState> {
         return (
           <FailureContainer>
             <FailureImg src={imgUrl} alt="failure view" />
-
             <FailureText theme={theme}>Oops! Something Went Wrong</FailureText>
             <FailureText theme={theme}>
               We are having some trouble to complete your request. Please try
               again
             </FailureText>
-            <RetryButton type="button" onClick={this.getVideos}>
+            <RetryButton
+              type="button"
+              onClick={() => dispatch(getGamingVideos())}
+            >
               Retry
             </RetryButton>
           </FailureContainer>
@@ -146,49 +97,45 @@ class Gaming extends Component<{}, GamingState> {
     </ThemeContext.Consumer>
   );
 
-  renderUIBasedOnAPIStatus = (): ReactElement => {
-    const { apiStatus } = this.state;
-    switch (apiStatus) {
-      case apiStatusConstants.success:
-        return this.getSuccessView();
-      case apiStatusConstants.failure:
-        return this.getFailureView();
-      case apiStatusConstants.inProgress:
-        return this.loader();
+  const renderUIBasedOnAPIStatus = (): React.ReactElement => {
+    switch (status) {
+      case "succeeded":
+        return getSuccessView();
+      case "failed":
+        return getFailureView();
+      case "loading":
+        return loader();
       default:
         return <></>;
     }
   };
 
-  render(): ReactElement {
-    return (
-      <ThemeContext.Consumer>
-        {(value) => {
-          const { isDarkTheme } = value;
-          const theme = isDarkTheme ? "dark" : "light";
-          return (
-            <>
-              <Layout>
-                <GamingMainContainer data-testid="gaming" theme={theme}>
-                  <MainBody>
-                    <GamingContainer>
-                      <GamingMenuContainer theme={theme}>
-                        <IconContainer theme={theme}>
-                          <IoLogoGameControllerB size={40} color="#ff0b37" />
-                        </IconContainer>
-                        <MenuHeading theme={theme}>Gaming</MenuHeading>
-                      </GamingMenuContainer>
-                      {this.renderUIBasedOnAPIStatus()}
-                    </GamingContainer>
-                  </MainBody>
-                </GamingMainContainer>
-              </Layout>
-            </>
-          );
-        }}
-      </ThemeContext.Consumer>
-    );
-  }
-}
+  return (
+    <ThemeContext.Consumer>
+      {({ isDarkTheme }) => {
+        const theme = isDarkTheme ? "dark" : "light";
+        return (
+          <>
+            <Layout>
+              <GamingMainContainer data-testid="gaming" theme={theme}>
+                <MainBody>
+                  <GamingContainer>
+                    <GamingMenuContainer theme={theme}>
+                      <IconContainer theme={theme}>
+                        <IoLogoGameControllerB size={40} color="#ff0b37" />
+                      </IconContainer>
+                      <MenuHeading theme={theme}>Gaming</MenuHeading>
+                    </GamingMenuContainer>
+                    {renderUIBasedOnAPIStatus()}
+                  </GamingContainer>
+                </MainBody>
+              </GamingMainContainer>
+            </Layout>
+          </>
+        );
+      }}
+    </ThemeContext.Consumer>
+  );
+};
 
 export default Gaming;
