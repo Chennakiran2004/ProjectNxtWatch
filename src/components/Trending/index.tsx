@@ -78,7 +78,7 @@ const Trending = () => {
           </LoaderContainer>
         );
       default:
-        return null;
+        return <></>;
     }
   };
 
