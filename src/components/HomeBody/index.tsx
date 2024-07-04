@@ -20,8 +20,6 @@ import {
   VideoDetailsText,
 } from "./styledComponents";
 
-// import "./index.css";
-
 interface channel {
   name: string;
   profileImageUrl: string;

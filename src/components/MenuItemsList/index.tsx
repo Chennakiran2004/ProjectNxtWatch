@@ -12,8 +12,6 @@ import {
   ActiveMenu,
 } from "../../Context/activeMenuConstants";
 
-// import "./index.css";
-
 const MenuItemsList: React.FC = () => {
   const { isDarkTheme } = useContext(ThemeContext);
   const { activeMenu, changeActiveMenu } = useContext(ActiveMenuContext);
