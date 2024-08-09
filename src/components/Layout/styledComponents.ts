@@ -1,8 +1,8 @@
 import styled from "styled-components";
 
 export const LayoutContainer = styled.div<{ theme: string }>`
-  background-color: ${(props) =>
-    props.theme === "dark" ? "#0f0f0f" : "#f9f9f9"};
+  background-color: ${(props) => (props.theme === "dark" ? "#333" : "#f9f9f9")};
+  color: ${(props) => (props.theme === "dark" ? "#f9f9f9" : "#333")};
   min-height: 100vh;
   display: flex;
   flex-direction: column;

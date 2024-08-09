@@ -25,16 +25,17 @@ const MenuItemsList: React.FC = () => {
   const iconActive = "#ff0b37";
 
   return (
-    <MenuList>
+    <MenuList data-testid="menu-items-list">
       <Link to="/" className="link">
         <MenuLink
           theme={theme}
-          isActive={activeMenu === activeMenuConstants.home}
+          $isActive={activeMenu === activeMenuConstants.home}
           onClick={() => handleMenuClick(activeMenuConstants.home)}
           key="HOME"
         >
           <AiFillHome
             size={25}
+            data-testid="homeIcon"
             color={
               activeMenu === activeMenuConstants.home ? iconActive : iconColor
             }
@@ -45,12 +46,13 @@ const MenuItemsList: React.FC = () => {
       <Link to="/trending" className="link">
         <MenuLink
           theme={theme}
-          isActive={activeMenu === activeMenuConstants.trending}
+          $isActive={activeMenu === activeMenuConstants.trending}
           onClick={() => handleMenuClick(activeMenuConstants.trending)}
           key="TRENDING"
         >
           <AiFillFire
             size={25}
+            data-testid="trendingIcon"
             color={
               activeMenu === activeMenuConstants.trending
                 ? iconActive
@@ -63,12 +65,13 @@ const MenuItemsList: React.FC = () => {
       <Link to="/gaming" className="link">
         <MenuLink
           theme={theme}
-          isActive={activeMenu === activeMenuConstants.gaming}
+          $isActive={activeMenu === activeMenuConstants.gaming}
           onClick={() => handleMenuClick(activeMenuConstants.gaming)}
           key="GAMING"
         >
           <IoLogoGameControllerB
             size={25}
+            data-testid="gamingIcon"
             color={
               activeMenu === activeMenuConstants.gaming ? iconActive : iconColor
             }
@@ -79,12 +82,13 @@ const MenuItemsList: React.FC = () => {
       <Link to="/saved-videos" className="link">
         <MenuLink
           theme={theme}
-          isActive={activeMenu === activeMenuConstants.savedVideos}
+          $isActive={activeMenu === activeMenuConstants.savedVideos}
           onClick={() => handleMenuClick(activeMenuConstants.savedVideos)}
           key="SAVED_VIDEOS"
         >
           <RiMenuAddLine
             size={25}
+            data-testid="savedVideosIcon"
             color={
               activeMenu === activeMenuConstants.savedVideos
                 ? iconActive

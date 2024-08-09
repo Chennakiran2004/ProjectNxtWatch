@@ -38,7 +38,7 @@ const Gaming: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
 
   const { status, error } = useSelector((state: RootState) => state.gaming);
-  const videosList = useSelector((state: RootState) => state.gaming.videosList);
+  const videosList = useSelector((state: RootState) => state.gaming.videosList) || [];
 
   useEffect(() => {
     dispatch(getGamingVideos());
@@ -49,7 +49,7 @@ const Gaming: React.FC = () => {
       {({ isDarkTheme }): React.ReactElement => {
         const theme = isDarkTheme ? "dark" : "light";
         return (
-          <LoaderContainer theme={theme}>
+          <LoaderContainer data-testid="loader" theme={theme}>
             <ThreeDots
               color={isDarkTheme ? "#ffffff" : "#000000"}
               height={50}
@@ -62,7 +62,7 @@ const Gaming: React.FC = () => {
   );
 
   const getSuccessView = (): React.ReactElement => (
-    <VideosList>
+    <VideosList data-testid="gaming-success-view">
       {videosList.map((eachVideo: any) => (
         <GamingBody key={eachVideo.id} gameDetails={eachVideo} />
       ))}
@@ -117,7 +117,7 @@ const Gaming: React.FC = () => {
         return (
           <>
             <Layout>
-              <GamingMainContainer data-testid="gaming" theme={theme}>
+              <GamingMainContainer data-testid="gaming-container" theme={theme}>
                 <MainBody>
                   <GamingContainer>
                     <GamingMenuContainer theme={theme}>

@@ -77,7 +77,7 @@ const Login: React.FC = () => {
   }
 
   return (
-    <LoginContainer>
+    <LoginContainer data-testid="Login container">
       <LoginCardContainer>
         <WebsiteLogo src={websiteLogo} alt="website logo" />
         <Form onSubmit={onSubmit}>
@@ -92,6 +92,7 @@ const Login: React.FC = () => {
           <Label htmlFor="password">PASSWORD</Label>
           <LoginInput
             id="password"
+            data-testid="password"
             placeholder="Password"
             onChange={updatePassword}
             value={password}
@@ -100,6 +101,7 @@ const Login: React.FC = () => {
           <input
             type="checkbox"
             id="showPassword"
+            data-testid="showPassword"
             onChange={onCheckBox}
             className="showPassword"
           />
@@ -107,7 +109,7 @@ const Login: React.FC = () => {
             Show Password
           </ShowPasswordLabel>
           <div>
-            <LoginButton type="submit">Login</LoginButton>
+            <LoginButton data-testid="login-button" type="submit">Login</LoginButton>
           </div>
           <ErrorMsg>{isError && `* ${errorMsg}`}</ErrorMsg>
         </Form>

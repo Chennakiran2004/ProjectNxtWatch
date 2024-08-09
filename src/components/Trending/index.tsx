@@ -42,14 +42,19 @@ const Trending = () => {
       case "success":
         return (
           <VideosList>
-            {videosList.map((video: any) => (
-              <TrendingVideoCard videoDetails={video} key={video.id} />
-            ))}
+            {videosList && videosList.length > 0 ? (
+              videosList.map((video: any) => (
+                <TrendingVideoCard videoDetails={video} key={video.id} />
+              ))
+            ) : (
+              <p>No videos available</p>
+            )}
           </VideosList>
         );
+
       case "failure":
         return (
-          <FailureContainer>
+          <FailureContainer data-testid="failure-container">
             <FailureImg
               src={
                 isDarkTheme ? darkThemeFailureImgUrl : lightThemeFailureImgUrl
@@ -89,7 +94,7 @@ const Trending = () => {
         theme={isDarkTheme ? "dark" : "light"}
       >
         <MainBody>
-          <TrendingContainer>
+          <TrendingContainer data-testid="trending-container">
             <TrendingMenuContainer theme={isDarkTheme ? "dark" : "light"}>
               <IconContainer theme={isDarkTheme ? "dark" : "light"}>
                 <AiFillFire size={40} color="#ff0b37" />

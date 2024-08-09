@@ -1,8 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-import getAuthHeaders from "../Constants/getAuthHeaders";
-
-import { getCookie } from "../Constants/storageUtilities";
+import { fetchGamingVideos } from "../utils/getGamingVideos";
 
 interface VideoDetails {
   id: string;
@@ -26,27 +24,12 @@ const initialState: GamingState = {
 export const getGamingVideos = createAsyncThunk(
   "gaming/getGamingVideos",
   async (_, { rejectWithValue }) => {
-    const jwtToken = getCookie();
-    if (!jwtToken) {
-      return rejectWithValue("User is not authenticated");
+    const result = await fetchGamingVideos()
+    console.log(result)
+    if (typeof result === "string") {
+      return rejectWithValue(result)
     }
-
-    const url = "https://apis.ccbp.in/videos/gaming";
-    const response = await fetch(url, {
-      headers: getAuthHeaders(jwtToken),
-    });
-
-    if (!response.ok) {
-      return rejectWithValue("Failed to fetch gaming videos");
-    }
-
-    const data = await response.json();
-    return data.videos.map((eachItem: any) => ({
-      id: eachItem.id,
-      thumbnailUrl: eachItem.thumbnail_url,
-      title: eachItem.title,
-      viewCount: eachItem.view_count,
-    })) as VideoDetails[];
+    return result
   }
 );
 

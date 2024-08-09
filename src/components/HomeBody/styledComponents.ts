@@ -35,7 +35,7 @@ export const VideoTitle = styled.p<{ theme: string }>`
   &:active {
     text-decoration: none;
   }
-  color: ${(props) => (props.theme === "dark" ? "white" : "#0f0f0f")};
+  color: ${(props) => (props.theme === "dark" ? "#ffffff" : "#0f0f0f")};
 `;
 export const VideoTextContainer = styled.div`
   margin-left: 5px;

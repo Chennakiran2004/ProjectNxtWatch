@@ -3,7 +3,7 @@ import styled from "styled-components";
 export const SidebarContainer = styled.div<{ theme: string }>`
   width: 200px;
   background-color: ${(props) =>
-    props.theme === "dark" ? "#212121" : "#f4f4f4"};
+    props.theme === "dark" ? "rgb(33, 33, 33)" : "#f4f4f4"};
   height: 92vh;
   display: flex;
   flex-direction: column;
@@ -20,5 +20,5 @@ export const ContactUsContainer = styled.div`
 
 export const Text = styled.p<{ theme: string }>`
   font-weight: 600;
-  color: ${(props) => (props.theme === "dark" ? "#f4f4f4" : "#212121")};
+  color: ${(props) => (props.theme === "dark" ? "#f4f4f4" : "rgb(33,33,33)")};
 `;

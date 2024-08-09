@@ -1,8 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-import getAuthHeaders from "../Constants/getAuthHeaders";
-
-import { getCookie } from "../Constants/storageUtilities";
+import { fetchHomeVideos } from "../utils/fetchHomeVideos";
 
 interface VideoDetails {
   id: string;
@@ -31,32 +29,15 @@ const initialState: HomeState = {
 export const getHomeVideos = createAsyncThunk(
   "home/getHomeVideos",
   async (searchInput: string, { rejectWithValue }) => {
-    const jwtToken = getCookie();
-    if (!jwtToken) {
-      return rejectWithValue("User is not authenticated");
-    }
+    const result = await fetchHomeVideos(searchInput);
 
-    const url = `https://apis.ccbp.in/videos/all?search=${searchInput}`;
-    const response = await fetch(url, {
-      headers: getAuthHeaders(jwtToken),
-    });
-
-    if (response.ok) {
-      const data = await response.json();
-      return data.videos.map((eachItem: any) => ({
-        id: eachItem.id,
-        channel: {
-          name: eachItem.channel.name,
-          profileImageUrl: eachItem.channel.profile_image_url,
-        },
-        publishedAt: eachItem.published_at,
-        viewCount: eachItem.view_count,
-        title: eachItem.title,
-        thumbnailUrl: eachItem.thumbnail_url,
-      })) as VideoDetails[];
+    if (typeof result === "string") {
+      return rejectWithValue(result);
     }
+    return result;
   }
 );
+
 
 const HomeSlice = createSlice({
   name: "home",
@@ -82,5 +63,6 @@ const HomeSlice = createSlice({
       });
   },
 });
+
 
 export default HomeSlice.reducer;

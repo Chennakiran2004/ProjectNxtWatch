@@ -47,7 +47,8 @@ import {
 const Home: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { status, error, videosList } = useSelector(
-    (state: RootState) => state.home
+    (state: RootState) =>{
+      return state.home}
   );
 
   const [isPopup, setIsPopup] = React.useState(true);
@@ -82,10 +83,11 @@ const Home: React.FC = () => {
   const noVideosView = () => (
     <ThemeContext.Consumer>
       {({ isDarkTheme }) => (
-        <NoVideosContainer>
+        <NoVideosContainer data-testid="no-vieos-view-container">
           <NoVideosImg
             src="https://assets.ccbp.in/frontend/react-js/nxt-watch-no-search-results-img.png"
             alt="no videos"
+            data-testid="no videos found"
           />
           <FailureText theme={isDarkTheme ? "dark" : "light"}>
             No search results found
@@ -134,7 +136,7 @@ const Home: React.FC = () => {
   const failureView = () => (
     <ThemeContext.Consumer>
       {({ isDarkTheme }) => (
-        <FailureContainer>
+        <FailureContainer data-testid="failure-container">
           <FailureImg
             src={isDarkTheme ? darkThemeFailureImgUrl : lightThemeFailureImgUrl}
             alt="failure view"
@@ -161,7 +163,7 @@ const Home: React.FC = () => {
 
         return (
           <Layout>
-            <HomeMainContainer theme={theme}>
+            <HomeMainContainer theme={theme} data-testid="Home container">
               <HomeContainer theme={theme}>
                 {isPopup && (
                   <GetPremium data-testid="banner">
