@@ -41,7 +41,7 @@ export const VideoTitle = styled.p<{ theme: string }>`
     text-decoration: none;
   }
   font-family: Roboto;
-  color: ${(props) => (props.theme === "dark" ? "white" : "#0f0f0f")};
+  color: ${(props) => (props.theme === "dark" ? "#ffffff" : "#0f0f0f")};
   @media screen and (min-width: 768px) {
     font-size: 24px;
   }

@@ -25,7 +25,7 @@ const NotFound = () => (
 
       return (
         <Layout>
-          <NotFoundContainer theme={theme}>
+          <NotFoundContainer data-testid="not-found-container" theme={theme}>
             <NotFoundImage src={imgUrl} alt="not found" />
             <NotFoundText theme={theme}>Page Not Found</NotFoundText>
             <NotFoundText theme={theme}>

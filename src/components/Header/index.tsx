@@ -21,6 +21,7 @@ const Header: React.FC = () => {
   const { isDarkTheme, toggleTheme } = useContext(ThemeContext);
   const { changeActiveMenu } = useContext(ActiveMenuContext);
 
+
   const onClickLogout = () => {
     removeCookie();
     navigate("/login");
@@ -44,7 +45,7 @@ const Header: React.FC = () => {
   const color = isDarkTheme ? "white" : "black";
 
   return (
-    <>
+    <div data-testid="header">
       <NavMobileContainer theme={theme}>
         {renderLogo(theme)}
         <NavMobileIcons>
@@ -68,11 +69,12 @@ const Header: React.FC = () => {
                 : "https://assets.ccbp.in/frontend/react-js/nxt-watch-logo-light-theme-img.png"
             }
             alt="website logo"
+            data-testid="website logo"
             onClick={() => changeActiveMenu("home")}
           />
         </Link>
         <NavLargeIcons>
-          <IconButton type="button" onClick={toggleTheme}>
+          <IconButton data-testid="theme" type="button" onClick={toggleTheme}>
             {isDarkTheme ? (
               <FiSun color="white" size={23} />
             ) : (
@@ -86,7 +88,7 @@ const Header: React.FC = () => {
           <LogoutPopup onClickLogout={onClickLogout} theme={theme} />
         </NavLargeIcons>
       </NavLargeContainer>
-    </>
+    </div>
   );
 };
 

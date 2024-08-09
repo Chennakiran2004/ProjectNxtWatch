@@ -18,7 +18,7 @@ const Sidebar: React.FC = () => {
         const { isDarkTheme } = value;
         const theme = isDarkTheme ? "dark" : "light";
         return (
-          <SidebarContainer theme={theme}>
+          <SidebarContainer data-testid="sidebar" theme={theme}>
             <MenuItemsList />
             <ContactUsContainer>
               <Text theme={theme}>CONTACT US</Text>
@@ -33,7 +33,7 @@ const Sidebar: React.FC = () => {
                 />
                 <LogoIcons
                   src="https://assets.ccbp.in/frontend/react-js/nxt-watch-linked-in-logo-img.png"
-                  alt="linked in logo"
+                  alt="linkedin logo"
                 />
               </div>
               <Text theme={theme}>

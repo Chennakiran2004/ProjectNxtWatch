@@ -62,6 +62,7 @@ const VideoCard: FC<HomeBodyProps> = ({ videoDetails }) => {
       <Link
         to={`/videos/${id}`}
         className="link"
+        role="link"
         onClick={() => activeMenuContext.changeActiveMenu("initial")}
       >
         <Thumbnail src={thumbnailUrl} alt="video thumbnail" />

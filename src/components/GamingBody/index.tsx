@@ -33,10 +33,11 @@ const GamingCardBody: FC<GamingCardBodyProps> = ({ gameDetails }) => {
   const theme = themeContext.isDarkTheme ? "dark" : "light";
 
   return (
-    <VideoCardContainer>
+    <VideoCardContainer data-testid="game-body-details">
       <Link
         to={`/videos/${id}`}
         className="link"
+        role="link"
         onClick={() => activeMenuContext.changeActiveMenu("initial")}
       >
         <Thumbnail src={thumbnailUrl} alt="video thumbnail" />

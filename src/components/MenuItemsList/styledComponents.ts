@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 interface MenuListprops {
   theme: string;
-  isActive?: boolean;
+  $isActive?: boolean;
 }
 
 export const MenuList = styled.ul`
@@ -22,7 +22,7 @@ export const MenuLink = styled.li<MenuListprops>`
   background-color: ${(props) => {
     const { theme } = props;
     const color = theme === "dark" ? "#424242" : "#e2e8f0";
-    return props.isActive ? color : "";
+    return props.$isActive ? color : "";
   }};
   padding-left: 20px;
 `;
