@@ -45,7 +45,7 @@ describe("Header Component", () => {
         renderComponent(true);
         const websiteLogo = screen.getByTestId("website logo");
         const profileIcon = screen.getByAltText("profile");
-        const themeButton = screen.getAllByTestId("theme")[0];
+        const themeButton = screen.getAllByTestId("desktop-theme")[0];
 
         expect(websiteLogo).toBeInTheDocument();
         expect(profileIcon).toBeInTheDocument();
@@ -56,7 +56,7 @@ describe("Header Component", () => {
         renderComponent(false);
         const websiteLogo = screen.getByTestId("website logo");
         const profileIcon = screen.getByAltText("profile");
-        const themeButton = screen.getAllByTestId("theme")[0];
+        const themeButton = screen.getAllByTestId("desktop-theme")[0];
 
         expect(websiteLogo).toBeInTheDocument();
         expect(profileIcon).toBeInTheDocument();
@@ -65,7 +65,7 @@ describe("Header Component", () => {
 
     it("toggles theme when theme button is clicked", () => {
         renderComponent(false);
-        const themeButton = screen.getAllByTestId("theme")[0];
+        const themeButton = screen.getAllByTestId("desktop-theme")[0];
 
         fireEvent.click(themeButton);
         expect(mockToggleTheme).toHaveBeenCalledTimes(1);
@@ -73,7 +73,7 @@ describe("Header Component", () => {
 
     it("toggles theme when theme button is clicked", () => {
         renderComponent(false);
-        const themeButton = screen.getAllByTestId("theme")[0];
+        const themeButton = screen.getAllByTestId("desktop-theme")[0];
 
         fireEvent.click(themeButton);
         expect(mockToggleTheme).toHaveBeenCalledTimes(1);

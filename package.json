@@ -62,7 +62,7 @@
   "scripts": {
     "start": "react-scripts -r @cypress/instrument-cra start",
     "build": "react-scripts build",
-    "test": "cross-env IS_JEST=true react-scripts test --env=jsdom",
+    "test": "cross-env IS_JEST=true react-scripts test --env=jsdom test",
     "eject": "react-scripts eject"
   },
   "browserslist": [
