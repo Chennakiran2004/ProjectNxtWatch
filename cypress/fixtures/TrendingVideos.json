@@ -1,0 +1,60 @@
+{
+    "videos": [
+      {
+        "id": "1",
+        "thumbnail_url": "https://via.placeholder.com/150",
+        "title": "Epic Battle Royale",
+        "view_count": 1500000,
+        "channel": {
+          "name": "Gaming Channel",
+          "profile_image_url": "https://via.placeholder.com/50"
+        },
+        "published_at": "2024-09-01T12:00:00Z"
+      },
+      {
+        "id": "2",
+        "thumbnail_url": "https://via.placeholder.com/150",
+        "title": "Racing Thunder",
+        "view_count": 2000000,
+        "channel": {
+          "name": "Racing Channel",
+          "profile_image_url": "https://via.placeholder.com/50"
+        },
+        "published_at": "2024-09-01T12:00:00Z"
+      },
+      {
+        "id": "3",
+        "thumbnail_url": "https://via.placeholder.com/150",
+        "title": "Mystic Adventures",
+        "view_count": 1000000,
+        "channel": {
+          "name": "Adventure Channel",
+          "profile_image_url": "https://via.placeholder.com/50"
+        },
+        "published_at": "2024-09-01T12:00:00Z"
+      },
+      {
+        "id": "4",
+        "thumbnail_url": "https://via.placeholder.com/150",
+        "title": "Space Odyssey",
+        "view_count": 2500000,
+        "channel": {
+          "name": "Space Channel",
+          "profile_image_url": "https://via.placeholder.com/50"
+        },
+        "published_at": "2024-09-01T12:00:00Z"
+      },
+      {
+        "id": "5",
+        "thumbnail_url": "https://via.placeholder.com/150",
+        "title": "Zombie Apocalypse",
+        "view_count": 1800000,
+        "channel": {
+          "name": "Zombie Channel",
+          "profile_image_url": "https://via.placeholder.com/50"
+        },
+        "published_at": "2024-09-01T12:00:00Z"
+      }
+    ]
+  }
+  

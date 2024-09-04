@@ -27,9 +27,7 @@ const videoDetails = {
 
 const mockActiveMenu = jest.fn()
 
-// const mockActiveMenu = (menu: "initial" | "home" | "trending" | "gaming" | "savedVideos") => {
-//     // your implementation here
-//   };
+
 
 describe("HomeBody Component", () => {
 

@@ -1,0 +1,27 @@
+{
+    "videos": [
+      {
+        "id": "1",
+        "channel": {
+          "name": "Mock Channel 1",
+          "profile_image_url": "https://img1.hscicdn.com/image/upload/f_auto,t_ds_square_w_320,q_50/lsci/db/PICTURES/CMS/319900/319953.png"
+        },
+        "published_at": "2024-08-08",
+        "view_count": 10,
+        "title": "Mock Video 1",
+        "thumbnail_url": "https://img1.hscicdn.com/image/upload/f_auto,t_ds_square_w_320,q_50/lsci/db/PICTURES/CMS/319900/319953.png"
+      },
+      {
+        "id": "2",
+        "channel": {
+          "name": "Mock Channel 2",
+          "profile_image_url": "https://img1.hscicdn.com/image/upload/f_auto,t_ds_square_w_320,q_50/lsci/db/PICTURES/CMS/319900/319953.png"
+        },
+        "published_at": "2024-08-07",
+        "view_count": 20,
+        "title": "Mock Video 2",
+        "thumbnail_url": "https://img1.hscicdn.com/image/upload/f_auto,t_ds_square_w_320,q_50/lsci/db/PICTURES/CMS/319900/319953.png"
+      }
+    ]
+  }
+  
