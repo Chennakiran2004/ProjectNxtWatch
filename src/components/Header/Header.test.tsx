@@ -10,6 +10,12 @@ import ThemeContext from '../../Context/ThemeContext';
 
 import ActiveMenuContext from '../../Context/ActiveMenuContext';
 
+import { removeCookie } from '../../Constants/storageUtilities';
+
+jest.mock('../../Constants/storageUtilities', () => ({
+    removeCookie: jest.fn(),
+  }));
+
 describe("Header Component", () => {
     const mockToggleTheme = jest.fn();
     const mockChangeActiveMenu = jest.fn();
@@ -78,4 +84,16 @@ describe("Header Component", () => {
         fireEvent.click(themeButton);
         expect(mockToggleTheme).toHaveBeenCalledTimes(1);
     });
+
+
+
+    it("should pass onClickLogout function to LogoutPopup", () => {
+        renderComponent(false);
+        const logoutPopup = screen.getAllByTestId("Logout");
+        // expect(logoutPopup).toBeInTheDocument();
+        fireEvent.click(logoutPopup[0]);
+        expect(screen.getByText("Are you sure, you want to logout?")).toBeInTheDocument()
+    });
+
+
 });

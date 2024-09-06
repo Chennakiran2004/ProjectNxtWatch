@@ -227,6 +227,7 @@ const VideoItemDetails: React.FC = () => {
   );
 
   const renderUIBasedOnAPIStatus = () => {
+    console.log(apiStatus)
     switch (apiStatus) {
       case "success":
         return successView();

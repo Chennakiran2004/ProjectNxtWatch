@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom';
 
-import { screen, fireEvent, waitFor, act } from '@testing-library/react';
+import { screen, act } from '@testing-library/react';
 
 import Trending from '../Trending';
 
@@ -46,7 +46,7 @@ describe('Trending Component', () => {
       renderWithProviders(<Trending/>)
     })
 
-    await waitFor(() => {
+    await act(() => {
       expect(fetchTrendingVideosSpy).toHaveBeenCalled()
       expect(screen.getByText('Video 1')).toBeInTheDocument()
     })

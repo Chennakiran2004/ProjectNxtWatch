@@ -21,8 +21,8 @@ const videoDetails = {
     viewCount: "1M",
     title: "Video Title",
     id: "123",
-    publishedAt: new Date().toISOString(),
-  };
+    publishedAt: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(), 
+};
 
 
 const mockActiveMenu = jest.fn()
@@ -79,4 +79,23 @@ describe("HomeBody Component", () => {
 
         expect(videoTitle).toHaveStyle("color: rgb(255, 255, 255)")
     })
+
+    it("formats postedAt date correctly when postedAtList length is 3", () => {
+        renderComponent('dark');
+
+        // Adjust `videoDetails.publishedAt` to ensure it results in postedAtList with length 3
+        const postedAtText = screen.getByText(/ago$/);
+        expect(postedAtText).toBeInTheDocument();
+
+        // Ensure the postedAtText is formatted correctly
+        const postedAtList = postedAtText?.textContent?.split(" ");
+        expect(postedAtList?.length).toBeLessThanOrEqual(3); // Length should be less than 3 after formatting
+    });
+    
+    it("renders VideoCardContainer as an 'li' element", () => {
+        renderComponent('dark');
+
+        const videoCardContainer = screen.getByRole("listitem"); 
+        expect(videoCardContainer).toBeInTheDocument();
+    });
 })

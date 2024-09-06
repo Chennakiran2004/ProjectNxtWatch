@@ -133,27 +133,6 @@ const Home: React.FC = () => {
     }
   };
 
-  const failureView = () => (
-    <ThemeContext.Consumer>
-      {({ isDarkTheme }) => (
-        <FailureContainer data-testid="failure-container">
-          <FailureImg
-            src={isDarkTheme ? darkThemeFailureImgUrl : lightThemeFailureImgUrl}
-            alt="failure view"
-          />
-          <FailureText theme={isDarkTheme ? "dark" : "light"}>
-            Oops! Something Went Wrong
-          </FailureText>
-          <RetryButton
-            type="button"
-            onClick={() => dispatch(getHomeVideos(searchInput))}
-          >
-            Retry
-          </RetryButton>
-        </FailureContainer>
-      )}
-    </ThemeContext.Consumer>
-  );
 
   return (
     <ThemeContext.Consumer>

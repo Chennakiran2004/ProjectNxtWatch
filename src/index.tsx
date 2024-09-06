@@ -10,6 +10,7 @@ import { Provider } from "react-redux";
 import store from "./storeFolder/store";
 import { EnhancedStore } from "@reduxjs/toolkit";
 
+
 const rootElement = document.getElementById("root")!;
 const root = ReactDOM.createRoot(rootElement);
 

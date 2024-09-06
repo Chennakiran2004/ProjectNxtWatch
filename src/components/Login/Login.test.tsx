@@ -67,6 +67,19 @@ describe("Login Component", () => {
         expect(password).toHaveAttribute("type", "text")
     })
 
+    it("hides password when checkbox is clicked", () => {
+        renderComponent();
+
+        const password = screen.getByTestId("password")
+        const showPassword = screen.getByTestId("showPassword")
+
+        fireEvent.click(showPassword)
+
+        fireEvent.click(showPassword)
+
+        expect(password).toHaveAttribute("type", "password")
+    })
+
     it("should handle successful login", async () => {
         (fetchApi as jest.Mock).mockResolvedValue({
             success: true,
