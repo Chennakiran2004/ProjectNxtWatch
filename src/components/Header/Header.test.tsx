@@ -16,6 +16,7 @@ jest.mock("../../Constants/storageUtilities", () => ({
   removeCookie: jest.fn(),
 }));
 
+
 describe("Header Component", () => {
   const mockToggleTheme = jest.fn();
   const mockChangeActiveMenu = jest.fn();
