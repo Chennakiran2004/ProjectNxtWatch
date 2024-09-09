@@ -27,9 +27,9 @@ export const HeaderLogoImg = styled.img`
   }
 `;
 export const NavMobileIcons = styled.div`
-@media screen and (max-width: 768px) {
-  display: block;
-}
+  @media screen and (max-width: 768px) {
+    display: block;
+  }
 `;
 
 export const IconButton = styled.button`

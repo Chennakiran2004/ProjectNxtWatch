@@ -62,7 +62,7 @@ export const fetchVideoDetails = createAsyncThunk(
     }
     const data = await response.json();
     return data.video_details;
-  }
+  },
 );
 
 const videoDetailsSlice = createSlice({

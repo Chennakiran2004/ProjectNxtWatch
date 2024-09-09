@@ -63,13 +63,6 @@ describe("Header", () => {
         cy.url().should("eq", "http://localhost:3000/login")
 
     })
-
-    
-    it("coverage", () => {
-        cy.window().then((win: any) => {
-            console.log(win.__coverage__);
-        });
-    })
 })
 
 

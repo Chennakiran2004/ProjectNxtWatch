@@ -140,9 +140,7 @@ const VideoItemDetails: React.FC = () => {
                         const saveText = present ? "Saved" : "Save";
 
                         const handleSaveClick = () => {
-                          console.log("Saving video:", videoDetails);
                           const result = updateSave(videoDetails);
-                          console.log("Update Save result:", result);
                         };
                         return (
                           <Button

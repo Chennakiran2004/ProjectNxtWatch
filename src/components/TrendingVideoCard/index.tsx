@@ -32,8 +32,11 @@ interface VideoDetails {
   publishedAt: string;
 }
 
-const TrendingVideoCard: FC<{ videoDetails: VideoDetails }> = ({ videoDetails }) => {
-  const { thumbnailUrl, channel, viewCount, title, id, publishedAt } = videoDetails;
+const TrendingVideoCard: FC<{ videoDetails: VideoDetails }> = ({
+  videoDetails,
+}) => {
+  const { thumbnailUrl, channel, viewCount, title, id, publishedAt } =
+    videoDetails;
   const { name, profileImageUrl } = channel;
 
   let postedAt = "Unknown";
@@ -56,7 +59,11 @@ const TrendingVideoCard: FC<{ videoDetails: VideoDetails }> = ({ videoDetails })
   const { changeActiveMenu } = useContext(ActiveMenuContext);
 
   return (
-    <Link to={`/videos/${id}`} className="link" onClick={() => changeActiveMenu("initial")}>
+    <Link
+      to={`/videos/${id}`}
+      className="link"
+      onClick={() => changeActiveMenu("initial")}
+    >
       <VideoCardContainer>
         <Thumbnail src={thumbnailUrl} alt="video thumbnail" />
         <ThumbnailText>

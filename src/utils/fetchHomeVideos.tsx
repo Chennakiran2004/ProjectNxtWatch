@@ -15,20 +15,22 @@ interface VideoDetails {
 }
 
 const mockVideos: VideoDetails[] = [
-    {
-      id: "1",
-      channel: {
-        name: "Mock Channel 1",
-        profileImageUrl: "https://example.com/mock1.jpg",
-      },
-      publishedAt: "2024-08-08",
-      viewCount: 10,
-      title: "Mock Video 1",
-      thumbnailUrl: "https://example.com/mock1.jpg",
+  {
+    id: "1",
+    channel: {
+      name: "Mock Channel 1",
+      profileImageUrl: "https://example.com/mock1.jpg",
     },
-  ];
+    publishedAt: "2024-08-08",
+    viewCount: 10,
+    title: "Mock Video 1",
+    thumbnailUrl: "https://example.com/mock1.jpg",
+  },
+];
 
-export const fetchHomeVideos = async (searchInput: string): Promise<VideoDetails[] | string> => {
+export const fetchHomeVideos = async (
+  searchInput: string,
+): Promise<VideoDetails[] | string> => {
   if (process.env.IS_JEST) {
     return mockVideos;
   }

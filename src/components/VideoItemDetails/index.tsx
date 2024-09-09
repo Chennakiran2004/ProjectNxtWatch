@@ -58,7 +58,7 @@ const VideoItemDetails: React.FC = () => {
   const { id = "" } = useParams<{ id: string }>();
   const dispatch = useDispatch<AppDispatch>();
   const { apiStatus, videoDetails, like, dislike } = useSelector(
-    (state: RootState) => state.videoDetails
+    (state: RootState) => state.videoDetails,
   );
 
   useEffect(() => {
@@ -134,15 +134,13 @@ const VideoItemDetails: React.FC = () => {
                       {(val) => {
                         const { updateSave, savedVideosList } = val;
                         const present = savedVideosList.find(
-                          (each) => each.id === id
+                          (each) => each.id === id,
                         );
                         const saveIsActive = present ? "active" : "not-active";
                         const saveText = present ? "Saved" : "Save";
 
                         const handleSaveClick = () => {
-                          console.log("Saving video:", videoDetails);
                           const result = updateSave(videoDetails);
-                          console.log("Update Save result:", result);
                         };
                         return (
                           <Button
@@ -182,7 +180,6 @@ const VideoItemDetails: React.FC = () => {
       </ThemeContext.Consumer>
     );
   };
-  
 
   const getFailureView = () => (
     <ThemeContext.Consumer>
@@ -227,7 +224,6 @@ const VideoItemDetails: React.FC = () => {
   );
 
   const renderUIBasedOnAPIStatus = () => {
-    console.log(apiStatus)
     switch (apiStatus) {
       case "success":
         return successView();

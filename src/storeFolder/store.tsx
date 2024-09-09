@@ -9,7 +9,7 @@ const rootReducer = combineReducers({
   home: homeReducer,
   trending: trendingReducer,
   videoDetails: videoDetailsReducer,
-}) 
+});
 
 export const setupStore = (preloadedState?: any) => {
   return configureStore({
@@ -18,13 +18,11 @@ export const setupStore = (preloadedState?: any) => {
   });
 };
 
+const store = setupStore();
 
-const store = setupStore()
+export default store;
 
-export default store
-
-
-export type AppDispatch = ReturnType<typeof setupStore>['dispatch'];
+export type AppDispatch = ReturnType<typeof setupStore>["dispatch"];
 
 export type RootState = {
   gaming: ReturnType<typeof gamingReducer>;

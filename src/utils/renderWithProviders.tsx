@@ -1,14 +1,14 @@
-import React from 'react';
-import { render, RenderOptions } from '@testing-library/react';
-import { Provider } from 'react-redux';
-import {setupStore} from '../storeFolder/store';
-import ThemeContext from '../Context/ThemeContext';
-import { MemoryRouter } from 'react-router-dom';
+import React from "react";
+import { render, RenderOptions } from "@testing-library/react";
+import { Provider } from "react-redux";
+import { setupStore } from "../storeFolder/store";
+import ThemeContext from "../Context/ThemeContext";
+import { MemoryRouter } from "react-router-dom";
 
 interface ExtendedRenderOptions extends RenderOptions {
   preloadedState?: any;
   store?: any;
-  themeContext?: {isDarkTheme: boolean, toggleTheme: () => {}}
+  themeContext?: { isDarkTheme: boolean; toggleTheme: () => {} };
 }
 
 const renderWithProviders = (
@@ -17,7 +17,7 @@ const renderWithProviders = (
     preloadedState = {},
     store = setupStore(preloadedState),
     ...renderOptions
-  }: ExtendedRenderOptions = {}
+  }: ExtendedRenderOptions = {},
 ) => {
   const themeContextValue = {
     isDarkTheme: false,
@@ -25,25 +25,24 @@ const renderWithProviders = (
   };
 
   const Wrapper = ({ children }: { children: React.ReactNode }) => {
-    try{
-      return(
+    try {
+      return (
         <Provider store={store}>
-      <MemoryRouter>
-        <ThemeContext.Provider value={themeContextValue}>
-            {children}
-        </ThemeContext.Provider>
-      </MemoryRouter>
-    </Provider>
-      )
+          <MemoryRouter>
+            <ThemeContext.Provider value={themeContextValue}>
+              {children}
+            </ThemeContext.Provider>
+          </MemoryRouter>
+        </Provider>
+      );
+    } catch (error) {
+      throw error;
     }
-    catch(error){
-      throw error
-    }
-  }
+  };
 
   return {
     store,
-    ...render(ui, { wrapper: Wrapper, ...renderOptions })
+    ...render(ui, { wrapper: Wrapper, ...renderOptions }),
   };
 };
 

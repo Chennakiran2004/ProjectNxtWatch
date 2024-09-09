@@ -26,4 +26,4 @@ export const fetchTrendingVideos = async () => {
     title: eachItem.title,
     viewCount: eachItem.view_count,
   }));
-}
+};

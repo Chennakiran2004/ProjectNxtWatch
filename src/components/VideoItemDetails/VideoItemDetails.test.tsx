@@ -1,5 +1,5 @@
 // VideoItemDetails.test.tsx
-import '@testing-library/jest-dom';
+import "@testing-library/jest-dom";
 import { Provider } from "react-redux";
 import VideoItemDetails from ".";
 import { render, screen } from "@testing-library/react";
@@ -11,30 +11,30 @@ const renderWithTheme = (theme: "light" | "dark") => {
   return render(
     <MemoryRouter>
       <Provider store={store}>
-        <ThemeContext.Provider value={{ isDarkTheme: theme === "dark", toggleTheme: () => {} }}>
+        <ThemeContext.Provider
+          value={{ isDarkTheme: theme === "dark", toggleTheme: () => {} }}
+        >
           <VideoItemDetails />
         </ThemeContext.Provider>
       </Provider>
-    </MemoryRouter>
+    </MemoryRouter>,
   );
 };
 
 describe("VideoItemDetails Component", () => {
+  it("should render component correctly", () => {
+    renderWithTheme("light");
 
-    it("should render component correctly", () => {
-        renderWithTheme("light");
+    expect(screen.getByTestId("videoItemDetails")).toBeInTheDocument();
+  });
 
-        expect(screen.getByTestId('videoItemDetails')).toBeInTheDocument();
-    })
+  it("should render component with light theme", () => {
+    renderWithTheme("light");
+    expect(screen.getByTestId("videoItemDetails")).toBeInTheDocument();
+  });
 
-
-    it("should render component with light theme", () => {
-        renderWithTheme("light");
-        expect(screen.getByTestId('videoItemDetails')).toBeInTheDocument();
-    });
-
-    it("should render component with dark theme", () => {
-        renderWithTheme("dark");
-        expect(screen.getByTestId('videoItemDetails')).toBeInTheDocument();
-    });
+  it("should render component with dark theme", () => {
+    renderWithTheme("dark");
+    expect(screen.getByTestId("videoItemDetails")).toBeInTheDocument();
+  });
 });

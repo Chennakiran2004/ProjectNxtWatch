@@ -25,7 +25,6 @@ export const getGamingVideos = createAsyncThunk(
   "gaming/getGamingVideos",
   async (_, { rejectWithValue }) => {
     const result = await fetchGamingVideos()
-    console.log(result)
     if (typeof result === "string") {
       return rejectWithValue(result)
     }

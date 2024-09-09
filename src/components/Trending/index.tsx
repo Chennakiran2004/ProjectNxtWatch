@@ -29,7 +29,7 @@ import { AppDispatch, RootState } from "../../storeFolder/store";
 const Trending = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { videosList, apiStatus, error } = useSelector(
-    (state: RootState) => state.trending
+    (state: RootState) => state.trending,
   );
   const { isDarkTheme } = useContext(ThemeContext);
 

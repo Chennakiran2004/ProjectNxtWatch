@@ -16,13 +16,10 @@ import {
 } from "./styledComponents";
 import LogoutPopup from "../LogoutPopup";
 
-
-
 const Header: React.FC = () => {
   const navigate = useNavigate();
   const { isDarkTheme, toggleTheme } = useContext(ThemeContext);
   const { changeActiveMenu } = useContext(ActiveMenuContext);
-
 
   const onClickLogout = () => {
     removeCookie();
@@ -49,10 +46,14 @@ const Header: React.FC = () => {
 
   return (
     <div data-testid="header">
-     <NavMobileContainer data-testid="nav-mobile" theme={theme}>
+      <NavMobileContainer data-testid="nav-mobile" theme={theme}>
         {renderLogo(theme)}
         <NavMobileIcons>
-          <IconButton type="button" data-testid="mobile-theme" onClick={toggleTheme}>
+          <IconButton
+            type="button"
+            data-testid="mobile-theme"
+            onClick={toggleTheme}
+          >
             {isDarkTheme ? (
               <FiSun color="white" size={22} />
             ) : (
@@ -76,7 +77,11 @@ const Header: React.FC = () => {
           />
         </Link>
         <NavLargeIcons>
-          <IconButton data-testid="desktop-theme" type="button" onClick={toggleTheme}>
+          <IconButton
+            data-testid="desktop-theme"
+            type="button"
+            onClick={toggleTheme}
+          >
             {isDarkTheme ? (
               <FiSun color="white" size={23} />
             ) : (

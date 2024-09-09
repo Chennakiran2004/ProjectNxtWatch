@@ -110,9 +110,13 @@ const Login: React.FC = () => {
             Show Password
           </ShowPasswordLabel>
           <div>
-            <LoginButton data-testid="login-button" type="submit">Login</LoginButton>
+            <LoginButton data-testid="login-button" type="submit">
+              Login
+            </LoginButton>
           </div>
-          <ErrorMsg data-testid="errorMsg">{isError && `* ${errorMsg}`}</ErrorMsg>
+          <ErrorMsg data-testid="errorMsg">
+            {isError && `* ${errorMsg}`}
+          </ErrorMsg>
         </Form>
       </LoginCardContainer>
     </LoginContainer>

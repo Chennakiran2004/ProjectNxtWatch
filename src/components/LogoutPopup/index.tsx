@@ -41,7 +41,11 @@ const LogoutPopup: React.FC<LogoutPopupProps> = ({ onClickLogout, theme }) => {
 
   return (
     <Popup
-      trigger={<Button data-testid="Logout" type="button">Logout</Button>}
+      trigger={
+        <Button data-testid="Logout" type="button">
+          Logout
+        </Button>
+      }
       modal
       className="logout-popup"
     >

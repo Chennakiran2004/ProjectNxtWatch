@@ -66,7 +66,7 @@ class App extends Component<{}, AppState> {
     const { savedVideosList } = this.state;
 
     const updatedList = savedVideosList.filter(
-      (eachVideo) => eachVideo.id !== videoDetails.id
+      (eachVideo) => eachVideo.id !== videoDetails.id,
     );
 
     this.setState({ savedVideosList: updatedList });
@@ -85,7 +85,7 @@ class App extends Component<{}, AppState> {
   updateSave = (videoDetails: VideoDetails) => {
     this.setState(
       (previousState) => ({ save: !previousState.save }),
-      () => this.updateSaveVideosList(videoDetails)
+      () => this.updateSaveVideosList(videoDetails),
     );
   };
 

@@ -1,4 +1,4 @@
-import React, {useEffect } from "react";
+import React, { useEffect } from "react";
 
 import { ThreeDots } from "react-loader-spinner";
 
@@ -38,7 +38,8 @@ const Gaming: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
 
   const { status, error } = useSelector((state: RootState) => state.gaming);
-  const videosList = useSelector((state: RootState) => state.gaming.videosList) || [];
+  const videosList =
+    useSelector((state: RootState) => state.gaming.videosList) || [];
 
   useEffect(() => {
     dispatch(getGamingVideos());

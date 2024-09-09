@@ -32,9 +32,9 @@ const initialState: TrendingState = {
 export const getTrendingVideos = createAsyncThunk(
   "trending/getTrendingVideos",
   async () => {
-    const result = await fetchTrendingVideos()
-    return result
-  }
+    const result = await fetchTrendingVideos();
+    return result;
+  },
 );
 
 const TrendingSlice = createSlice({

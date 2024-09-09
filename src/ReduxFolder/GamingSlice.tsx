@@ -24,13 +24,12 @@ const initialState: GamingState = {
 export const getGamingVideos = createAsyncThunk(
   "gaming/getGamingVideos",
   async (_, { rejectWithValue }) => {
-    const result = await fetchGamingVideos()
-    console.log(result)
+    const result = await fetchGamingVideos();
     if (typeof result === "string") {
-      return rejectWithValue(result)
+      return rejectWithValue(result);
     }
-    return result
-  }
+    return result;
+  },
 );
 
 const GamingSlice = createSlice({
@@ -47,14 +46,14 @@ const GamingSlice = createSlice({
         (state, action: PayloadAction<VideoDetails[]>) => {
           state.status = "succeeded";
           state.videosList = action.payload;
-        }
+        },
       )
       .addCase(
         getGamingVideos.rejected,
         (state, action: PayloadAction<any>) => {
           state.status = "failed";
           state.error = action.payload;
-        }
+        },
       );
   },
 });

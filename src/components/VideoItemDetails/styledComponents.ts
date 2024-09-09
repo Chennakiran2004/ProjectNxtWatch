@@ -7,7 +7,7 @@ export const MainBody = styled.div`
   }
 `;
 
-export const SidebarContainer = styled.div<{theme: string}>`
+export const SidebarContainer = styled.div<{ theme: string }>`
   display: none;
   @media screen and (min-width: 768px) {
     display: block;

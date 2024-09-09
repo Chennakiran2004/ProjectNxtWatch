@@ -35,9 +35,8 @@ export const getHomeVideos = createAsyncThunk(
       return rejectWithValue(result);
     }
     return result;
-  }
+  },
 );
-
 
 const HomeSlice = createSlice({
   name: "home",
@@ -55,7 +54,7 @@ const HomeSlice = createSlice({
           if (action.payload !== undefined) {
             state.videosList = action.payload;
           }
-        }
+        },
       )
       .addCase(getHomeVideos.rejected, (state, action: PayloadAction<any>) => {
         state.status = "failed";
@@ -63,6 +62,5 @@ const HomeSlice = createSlice({
       });
   },
 });
-
 
 export default HomeSlice.reducer;

@@ -46,10 +46,9 @@ import {
 
 const Home: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { status, error, videosList } = useSelector(
-    (state: RootState) =>{
-      return state.home}
-  );
+  const { status, error, videosList } = useSelector((state: RootState) => {
+    return state.home;
+  });
 
   const [isPopup, setIsPopup] = React.useState(true);
   const [searchInput, setSearchInput] = React.useState("");
@@ -132,7 +131,6 @@ const Home: React.FC = () => {
         return <></>;
     }
   };
-
 
   return (
     <ThemeContext.Consumer>
